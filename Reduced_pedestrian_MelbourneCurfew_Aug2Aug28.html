@@ -13,5 +13,68 @@
             <p>Please click the sensor for details</p>
           </div>
         </div>
+        
+        mapboxgl.accessToken = 'pk.eyJ1IjoiYWxleG96MDAxIiwiYSI6ImNrMjVlMmRkdTB6bTQzbHBoaGh4amgwbm4ifQ.TY8pajijF6xPcVvNIFtXLw';
+
+var map = new mapboxgl.Map({
+  container: 'map',
+  style: 'mapbox://styles/alexoz001/ckekro4ss0mkk19rr317zzdyo/draft'
+});
+
+
+// Set the legend, codes for colors in Mapbox Studio
+map.on('load', function() {
+  var layers = ['6-10%', '11-30%', '31-50%', '51-64%'];
+  var colors = ['#f4c2f9', '#e887f7', '#d11ded', '#5d066a'];
+  for (i = 0; i < layers.length; i++) {
+    var layer = layers[i];
+    var color = colors[i];
+    var item = document.createElement('div');
+    var key = document.createElement('span');
+    key.className = 'legend-key';
+    key.style.backgroundColor = color;
+    var value = document.createElement('span');
+    value.innerHTML = layer;
+    item.appendChild(key);
+    item.appendChild(value);
+    legend.appendChild(item);
+  }
+  
+// popup information when clicking
+  map.on('click', 'changingratio-pedestriancount-CityofMelbourne', function(e) {
+    new mapboxgl.Popup()
+      .setLngLat(e.lngLat)
+      .setHTML(e.features[0].properties.Sensor + ": " + "<br>"+"Average reduced ratio: "+ e.features[0].properties.Avearge_Ratio + " *100%"  + "<br>" + "Average reduced counts: "+ e.features[0].properties.sum_cts)
+      .addTo(map);
+  });
+  
+// show the info when cursor moves
+  map.on('mousemove', function(i) {
+    var ave_ratio = map.queryRenderedFeatures(i.point, {
+      layers: ['changingratio-pedestriancount-CityofMelbourne']
+    });
+    if (ave_ratio.length > 0) {
+      document.getElementById('info').innerHTML = '<p>' +'Sensor '+ ave_ratio[0].properties.Sensor + '</em></p>';
+    } else {
+      document.getElementById('info').innerHTML = '<p>Please click the sensor for details.</p>';
+    }
+  });
+
+// Change the icon to a pointer icon when you mouse over // a sensor
+  map.on('mouseenter', 'changingratio-pedestriancount-CityofMelbourne', function() {
+    map.getCanvas().style.cursor = 'pointer';
+  });
+
+// Change it back to a pan icon when it leaves.
+  map.on('mouseleave', 'changingratio-pedestriancount-CityofMelbourne', function() {
+    map.getCanvas().style.cursor = '';
+  });
+
+});
+
+// zoom in and out, and navigator
+map.addControl(new mapboxgl.NavigationControl());
+    
+    
     </body>
 </html>
