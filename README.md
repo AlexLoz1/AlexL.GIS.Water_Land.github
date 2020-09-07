@@ -1,1 +1,175 @@
 # AlexL.GIS.Water_Land.github
+
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<meta charset='utf-8' />
+<script src='https://api.tiles.mapbox.com/mapbox-gl-js/v1.3.1/mapbox-gl.js'></script>
+<link href='https://api.tiles.mapbox.com/mapbox-gl-js/v1.3.1/mapbox-gl.css' rel='stylesheet' />
+
+<style> 
+#map {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+}
+
+.map-overlay {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  background: rgba(255, 255, 255, 0.8);
+  margin-right: 20px;
+  font-family: Arial, sans-serif;
+  overflow: auto;
+  border-radius: 3px;
+}
+
+#legend {
+  padding: 20px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  line-height: 18px;
+  height: 80px;
+  right: -18px;
+  margin-bottom: 50px;
+  width: 100px;
+}
+
+.legend-key {
+  display: inline-block;
+  border-radius: 20%;
+  width: 10px;
+  height: 10px;
+  margin-right: 3px;
+}
+
+#title {
+  top: 0;
+  left: 15px;
+  height: 150px;
+  margin-top: 20px;
+  width: 300px;
+}
+
+h2 {
+  margin: 10px;
+  font-size: 1em;
+  text-align: left;
+}
+
+p {
+  margin: 10px;
+  font-size: 0.8em;
+  text-align: left;
+}
+
+.mapboxgl-popup {
+  max-width: 200px;
+}
+
+.mapboxgl-popup-content {
+  text-align: left;
+  font-family: 'Arial', sans-serif;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+#map {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+}
+
+</style> 
+
+</head>
+
+<body> 
+
+<div id='map'></div>
+<div class='map-overlay' id='legend'></div>
+<div class='map-overlay' id='title'>
+  <h2>Reduced ratio of pedestrian counts, City of Melbourne (curfew, Aug 2~Aug 28, compared to July)</h2>
+  <div id='info'>
+    <p>Please click the sensor for details</p>
+  </div>
+</div>
+
+
+<script> 
+
+mapboxgl.accessToken = 'pk.eyJ1IjoiYWxleG96MDAxIiwiYSI6ImNrMjVlMmRkdTB6bTQzbHBoaGh4amgwbm4ifQ.TY8pajijF6xPcVvNIFtXLw';
+
+var map = new mapboxgl.Map({
+  container: 'map',
+  style: 'mapbox://styles/alexoz001/ckekro4ss0mkk19rr317zzdyo/draft'
+});
+
+// Set the legend, codes for colors in Mapbox Studio
+map.on('load', function() {
+  var layers = ['6-10%', '11-30%', '31-50%', '51-64%'];
+  var colors = ['#f4c2f9', '#e887f7', '#d11ded', '#5d066a'];
+  for (i = 0; i < layers.length; i++) {
+    var layer = layers[i];
+    var color = colors[i];
+    var item = document.createElement('div');
+    var key = document.createElement('span');
+    key.className = 'legend-key';
+    key.style.backgroundColor = color;
+    var value = document.createElement('span');
+    value.innerHTML = layer;
+    item.appendChild(key);
+    item.appendChild(value);
+    legend.appendChild(item);
+  }
+  
+// popup information when clicking
+  map.on('click', 'changingratio-pedestriancount-CityofMelbourne', function(e) {
+    new mapboxgl.Popup()
+      .setLngLat(e.lngLat)
+      .setHTML(e.features[0].properties.Sensor + ": " + "<br>"+"Average reduced ratio: "+ e.features[0].properties.Avearge_Ratio + " *100%"  + "<br>" + "Average reduced counts: "+ e.features[0].properties.sum_cts)
+      .addTo(map);
+  });
+  
+// show the info when cursor moves
+  map.on('mousemove', function(i) {
+    var ave_ratio = map.queryRenderedFeatures(i.point, {
+      layers: ['changingratio-pedestriancount-CityofMelbourne']
+    });
+    if (ave_ratio.length > 0) {
+      document.getElementById('info').innerHTML = '<p>' +'Sensor '+ ave_ratio[0].properties.Sensor + '</em></p>';
+    } else {
+      document.getElementById('info').innerHTML = '<p>Please click the sensor for details.</p>';
+    }
+  });
+
+// Change the icon to a pointer icon when you mouse over // a sensor
+  map.on('mouseenter', 'changingratio-pedestriancount-CityofMelbourne', function() {
+    map.getCanvas().style.cursor = 'pointer';
+  });
+
+// Change it back to a pan icon when it leaves.
+  map.on('mouseleave', 'changingratio-pedestriancount-CityofMelbourne', function() {
+    map.getCanvas().style.cursor = '';
+  });
+
+});
+
+// zoom in and out, and navigator
+map.addControl(new mapboxgl.NavigationControl());
+
+</script> 
+
+</body> 
+
+</html>
+
+
+
