@@ -1,5 +1,9 @@
-# AlexL.GIS.Water_Land.github
+# AlexL.GIS.Water_Land_Policy.github
 
-This is the reduced pedestrian counts and ratio for curfew from Aug 2 to Aug 28 in City of Melbourne, compared to last 4 weeks' average level.
-This presentation is just for examing the data visualization, not holding any responsibilities for information about the pedemic. 
-Thanks!
+Welcome to the platform for a professional project manager and senior policy consultant with GIS perspectives, working 10 years for Ministries in China.
+
+I am PhD, major in natural resource management, curious about better policy advising using geospatial tools and data analysis methods.
+Also excel at ESRI software - ArcGIS Pro, ArcMap, ArcGIS Online, QGIS, WebGIS (Mapbox).
+Now I am trying hard for visualization tools and programming, like illustrator, PS, InDesign, Python, R and JavaScript.
+
+Thanks for comments!
