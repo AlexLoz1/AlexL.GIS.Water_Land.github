@@ -1,6 +1,8 @@
-# Alex Li, a project manager and senior policy consultant with GIS perspective
+# Alex Li
 
-PhD (2009), major in natural resource management, working 10 years for Ministries in China.
+PhD (2009), major in natural resource management.
+
+Project manager and senior policy consultant with GIS perspective, working 10 years for Ministries in China.
 
 Excel at ESRI software - ArcGIS Pro, ArcMap, ArcGIS Online, QGIS, WebGIS (Mapbox).
 
